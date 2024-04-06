@@ -29,16 +29,18 @@ echo '<br>';
 foreach ($course->modules as $module) {
     echo "Modulo {$module->name} <br>";
     foreach ($module->lessons as $lesson){
-        echo "Aula {$lesson->name}";
+        echo "... Aula {$lesson->name} <br>";
     }
 }
-    $data = [
-        'name' => 'Modulo x2'
-    ];
+    // $module = Module::first();
+    // $data = [
+    //     'name' => 'aula de laravel',
+    //     'video' => 'video de laravel',
+    // ];
 
-    // $course->modules()->create($data);
+    // $module->lessons()->create($data);
 
-    dd($course->modules);
+    dd($course);
 });
 
 Route::get('/one-to-one', function () {
