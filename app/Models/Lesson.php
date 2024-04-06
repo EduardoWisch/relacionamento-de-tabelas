@@ -19,3 +19,4 @@ class Lesson extends Model
         return $this->belongsTo(Module::class);
     }
 }
+
