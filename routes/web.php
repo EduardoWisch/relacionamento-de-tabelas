@@ -3,6 +3,7 @@
 use App\Models\{
     Course,
     Module,
+    Permission,
     User,
     Preference,
 };
@@ -19,19 +20,57 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::get('/many-to-many', function() {
+    $user = User::with('permissions')->find(1);
+    
+    // $permission = Permission::find(1);
+    // $user->permissions()->save($permission); // SALVA APENAS UM DE CADA VEZ
+    // $user->permissions()->saveMany([ 
+    //     Permission::find(1),
+    //     Permission::find(3),
+    //     Permission::find(4),
+    // ]); SALVA VÁRIOS DE UMA VEZ
+    // $user->permissions()->sync(3); // SALVA APENAS OS PASSADOS E DELETA OS OUTROS
+    // $user->permissions()->attach([1,3]); // SALVA VÁRIOS DE UMA VEZ
+    //$user->permissions()->detach([1,3]); // DELETA OS QUE FORAM PASSADOS
+
+    $user->refresh();
+
+    dd($user->permissions);
+});
+
+Route::get('/many-to-many', function() {
+    $user = User::with('permissions')->find(1);
+    
+    // $permission = Permission::find(1);
+    // $user->permissions()->save($permission); // SALVA APENAS UM DE CADA VEZ
+    // $user->permissions()->saveMany([ 
+    //     Permission::find(1),
+    //     Permission::find(3),
+    //     Permission::find(4),
+    // ]); SALVA VÁRIOS DE UMA VEZ
+    // $user->permissions()->sync(3); // SALVA APENAS OS PASSADOS E DELETA OS OUTROS
+    // $user->permissions()->attach([1,3]); // SALVA VÁRIOS DE UMA VEZ
+    //$user->permissions()->detach([1,3]); // DELETA OS QUE FORAM PASSADOS
+
+    $user->refresh();
+
+    dd($user->permissions);
+});
+
 Route::get('/one-to-many', function () {
     // $course = Course::create(['name' => 'Curso de Laravel']);
 
     $course = Course::with('modules.lessons')->first();
 
-echo $course->name;
-echo '<br>';
-foreach ($course->modules as $module) {
-    echo "Modulo {$module->name} <br>";
-    foreach ($module->lessons as $lesson){
-        echo "... Aula {$lesson->name} <br>";
+    echo $course->name;
+    echo '<br>';
+    foreach ($course->modules as $module) {
+        echo "Modulo {$module->name} <br>";
+        foreach ($module->lessons as $lesson){
+            echo "... Aula {$lesson->name} <br>";
+        }
     }
-}
     // $module = Module::first();
     // $data = [
     //     'name' => 'aula de laravel',
