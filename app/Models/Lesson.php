@@ -18,5 +18,10 @@ class Lesson extends Model
     {
         return $this->belongsTo(Module::class);
     }
+
+    public function comments()
+    {
+        return $this->morphMany(Comment::class, 'commentable');
+    }
 }
 
