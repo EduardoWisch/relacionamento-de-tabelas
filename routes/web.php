@@ -20,23 +20,19 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/many-to-many', function() {
+Route::get('/many-to-many-pivot', function() {
     $user = User::with('permissions')->find(1);
-    
-    // $permission = Permission::find(1);
-    // $user->permissions()->save($permission); // SALVA APENAS UM DE CADA VEZ
-    // $user->permissions()->saveMany([ 
-    //     Permission::find(1),
-    //     Permission::find(3),
-    //     Permission::find(4),
-    // ]); SALVA VÁRIOS DE UMA VEZ
-    // $user->permissions()->sync(3); // SALVA APENAS OS PASSADOS E DELETA OS OUTROS
-    // $user->permissions()->attach([1,3]); // SALVA VÁRIOS DE UMA VEZ
-    //$user->permissions()->detach([1,3]); // DELETA OS QUE FORAM PASSADOS
+    $user->permissions()->sync([
+        1 => ['active' => true],
+        3 => ['active' => false],
+    ]);
 
     $user->refresh();
 
-    dd($user->permissions);
+    echo "<b>{$user->name}</b> <br>";
+    foreach($user->permissions as $permission){
+        echo "{$permission->name} - {$permission->pivot->active} <br>";
+    }
 });
 
 Route::get('/many-to-many', function() {
@@ -50,7 +46,7 @@ Route::get('/many-to-many', function() {
     //     Permission::find(4),
     // ]); SALVA VÁRIOS DE UMA VEZ
     // $user->permissions()->sync(3); // SALVA APENAS OS PASSADOS E DELETA OS OUTROS
-    // $user->permissions()->attach([1,3]); // SALVA VÁRIOS DE UMA VEZ
+    // $user->permissions()->attach([1,3, 4]); // SALVA VÁRIOS DE UMA VEZ
     //$user->permissions()->detach([1,3]); // DELETA OS QUE FORAM PASSADOS
 
     $user->refresh();
