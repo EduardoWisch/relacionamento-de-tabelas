@@ -2,6 +2,7 @@
 
 use App\Models\{
     Course,
+    Image,
     Module,
     Permission,
     User,
@@ -19,6 +20,24 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+
+Route::get('/one-to-one-polymorphic', function() {
+    $user = User::find(3);
+    $data = ['path' => 'path/nome-image.image.pgn'];
+
+    if($user->image){
+        $user->image->update($data);
+    } else {
+        // $user->image()->save(
+        //     new Image ($data)
+        // );
+        $user->image()->create($data);
+    }
+
+    $user->refresh();
+
+    dd($user->image->path);
+});
 
 Route::get('/many-to-many-pivot', function() {
     $user = User::with('permissions')->find(1);
